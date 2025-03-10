@@ -50,24 +50,27 @@ const useAdminStore = (useWindow = false) => {
                     this.currentUser[key]=  ''
                 });
                 this.creating = false;
-                const notificationStore = useNotificationStore();
-                notificationStore.showNotification({
-                    type: 'success',
-                    message: '',
-                });
+                if(response){
+                    const notificationStore = useNotificationStore();
+                    notificationStore.showNotification({
+                        type: 'success',
+                        message: '',
+                    });
+                }
             },
             async updateCurrentUser(data,id) {
                 this.creating = true;     
                 const response = await useClient().http({ method: 'put', path: '/admin/'+id, data })
                 this.currentUser = response;
                 this.creating = false;
-                Object.assign(this.userForm, response);
-                const notificationStore = useNotificationStore();
-                notificationStore.showNotification({
-                    type: 'success',
-                    message: '',
-                });
-
+                if(response){
+                    Object.assign(this.userForm, response);
+                    const notificationStore = useNotificationStore();
+                    notificationStore.showNotification({
+                        type: 'success',
+                        message: '',
+                    });
+                }
             },
             async deleteUser(id){
                 const response = await useClient().http({ method: 'delete', path: '/admin/'+id })
